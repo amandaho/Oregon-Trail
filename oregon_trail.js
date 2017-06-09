@@ -21,20 +21,28 @@
   } //closes traveler
 
   function Wagon(capacity) {
-    this.passengers = [];
-    this.capacity = capacity;
+    var passengers = [];
+    var initialCapacity = capacity;
 
     this.getCapacity = function() {
       return capacity;
     }
-    this.getPassengers = function(newTraveler) {
-      this.passengers.push(newTraveler);
+
+    this.getPassengers = function() {
+      return passengers;
     }
+
+    this.setPassengers = function(newTraveler) {
+      passengers.push(newTraveler);
+    }
+
   } //closes Wagon
 
   function join(wagon, traveler) {
-    wagon.getPassengers(traveler);
+    if (wagon.getCapacity() <= 5) {
+    wagon.setPassengers(traveler);
   }
+}
 
   function getRandomIntInclusive(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -45,7 +53,7 @@
     return new Traveler(name, food, true);
   }
 
-  function makeWagon(capacity){
+  function makeWagon(capacity) {
     return new Wagon(capacity);
   }
 
@@ -62,9 +70,13 @@
     Traveler.setFood(Traveler.getFood() + eat);
   }
 
+
   function quarantine(wagon){
-    for (var i = 0; i < wagon.passengers.length; i++) {
-      if (wagon.passengers[i].getFood() < 20) {
+    let getPassengers = wagon.getPassengers();
+    //console.log('length = ' + getPassengers.length);
+
+    for (var i = 0; i < getPassengers.length; i++) {
+      if (getPassengers[i].getFood() < 20) {
        return true;
      }
     }
@@ -72,9 +84,10 @@
   }
 
   function food(wagon) {
+    let getPassengers = wagon.getPassengers();
     var total = 0;
-    for(var i = 0; i < wagon.passengers.length; i++) {
-      total += wagon.passengers[i].getFood();
+    for(var i = 0; i < getPassengers.length; i++) {
+      total += getPassengers[i].getFood();
     }
     return total;
   }
@@ -96,8 +109,8 @@ join(wagon, traveler2);
 console.log("Is someone in the wagon sick?" + " " + quarantine(wagon)); // print true if someone is sick, false otherwise
 console.log("Total Food in the wagon is" + " " + food(wagon)); // print juan's food + henrietta's food
 
-console.log("Traveler " + wagon.passengers[0].getName() + " has this amount of food " + traveler.getFood());
-console.log("Traveler " + wagon.passengers[1].getName() + " has this amount of food " + traveler2.getFood());
+console.log("Traveler " + traveler.getName() + " has this amount of food " + traveler.getFood());
+console.log("Traveler " + traveler2.getName() + " has this amount of food " + traveler2.getFood());
 
 
 })();
